@@ -20,13 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderOneDog(dog) {
-    let newDogTemplate = `<tr id=${dog.id}><td>${dog.name}</td><td>${dog.breed}</td><td>${dog.sex}</td><td><button class="edit-dog">Edit</button></td></tr>`
-    tableDiv.innerHTML += newDogTemplate
+    tableDiv.innerHTML += dogTemplate(dog)
+  }
+
+  function dogTemplate(dog) {
+    return `<tr data-dog-id=${dog.id}><td>${dog.name}</td><td>${dog.breed}</td><td>${dog.sex}</td><td><button class="edit-dog">Edit</button></td></tr>`
   }
 
   function editDog(event) {
     if (event.target.className === "edit-dog") {
-      let id = event.target.parentElement.parentElement.id
+      let id = event.target.parentElement.parentElement.dataset.dogId
       let info = event.target.parentElement.parentElement.querySelectorAll('td')
       let name = info[0].innerText
       let breed = info[1].innerText
@@ -48,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateDog() {
+    event.preventDefault()
+
     fetch(`http://localhost:3000/dogs/${editName.id}`, {
       method: "PATCH",
       headers: {
@@ -60,6 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sex: editSex.value
       })
     })
+
+    .then(resp => resp.json())
+    .then(dog => rerenderExistingDog(dog))
+  }
+
+  function rerenderExistingDog(dog) {
+    document.querySelector(`[data-dog-id="${dog.id}"]`).innerHTML = dogTemplate(dog)
   }
 
   fetchDogs()
