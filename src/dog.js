@@ -9,7 +9,7 @@ function buildDogClass(table, form) {
       this.render()
     }
     
-    get attributes(){
+    get attributes() {
       return {
         id: this.id, 
         name: this.name, 
@@ -18,7 +18,7 @@ function buildDogClass(table, form) {
       }
     }
     
-    set attributes(params){
+    set attributes(params) {
       this.id = params.id,
       this.name = params.name,
       this.breed = params.breed,
@@ -38,11 +38,12 @@ function buildDogClass(table, form) {
         <td>${this.name}</td> 
         <td>${this.breed}</td> 
         <td>${this.sex}</td> 
-        <td><button class="edit-button">Edit</button></td>`
+        <td><button class="edit-button">Edit</button></td>
+      `
      
       let editButton = this.element.querySelector('.edit-button')
       editButton.addEventListener('click', () => {
-        Dog.selectedDogId = this.id 
+        Dog.selectedDog = this 
         Dog.populateForm(this)
      })
     }
@@ -52,24 +53,22 @@ function buildDogClass(table, form) {
       form.breed.value = dogObject.breed
       form.sex.value = dogObject.sex
     }  
-    
-    static findDogById(dogId) {
-      return Dog.all.find(dog => dog.id == dogId)
-    }
   }
 
   Dog.all = new Array;
-  Dog.selectedDogId = null
+  Dog.selectedDog = null
   
   form.addEventListener('click', function(e){
     e.preventDefault()
-    dogObject = Dog.findDogById(Dog.selectedDogId)
+    let dogObject = Dog.selectedDog
+    
     dogObject.attributes = {
       id: dogObject.id,
-      name: e.target.parentElement.name.value,
-      breed: e.target.parentElement.breed.value,
-      sex: e.target.parentElement.sex.value
+      name: form.name.value,
+      breed: form.breed.value,
+      sex: form.sex.value
     }
+    
     dogObject.render()
     dogObject.emit('update', dogObject.attributes) 
   });
