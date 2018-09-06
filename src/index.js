@@ -39,6 +39,8 @@ function updateDogs(){
     sexInput.value = '';
 }
 
+//don't double dip by updating all the 10 dogs. Don't fetch from dog but just use the values the user input. Those were sent to the server. Use those values to only update the row that was changed. 
+
 //event listener callback
 function listenToEditButtons(event){
     let id = parseInt(event.target.dataset.id)
