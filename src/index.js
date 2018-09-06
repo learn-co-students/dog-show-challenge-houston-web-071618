@@ -166,7 +166,6 @@ function render(){
   });//forEach
 }//render()
 function patchThisShit(dog, index){
-  debugger
   fetch(`http://localhost:3000/dogs/${dog.id}`, {
     method: "PATCH",
     headers: {"Content-Type" : "application/json"},

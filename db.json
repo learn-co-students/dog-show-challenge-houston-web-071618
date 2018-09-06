@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Baby",
       "breed": "Scottish Deerhound",
-      "sex": "male"
+      "sex": "female"
     },
     {
       "id": 2,
@@ -15,7 +15,7 @@
     {
       "id": 3,
       "name": "Kenny",
-      "breed": "Korean",
+      "breed": "Super Korean",
       "sex": "male"
     },
     {
