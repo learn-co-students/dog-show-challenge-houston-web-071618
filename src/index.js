@@ -1,49 +1,7 @@
 const dogTable = document.getElementById("table-body");
 const form = document.getElementById("dog-form");
 
-document.addEventListener('DOMContentLoaded', () => {
-
-	showDogs();
-
-	dogTable.addEventListener("click", clickedEdit)
-
-	function clickedEdit(event) {
-		if (event.target.dataset.id) {
-			addDogToForm(event)
-		}
-	}
-
-	function addDogToForm(event) {
-		let row = event.target.parentElement.parentElement.children;
-		form.children[0].value = row[0].innerText
-		form.children[1].value = row[1].innerText
-		form.children[2].value = row[2].innerText
-		form.children[3].dataset.id = row[3].children[0].dataset.id
-	}
-
-	form.addEventListener("submit", function(event) {
-		event.preventDefault();
-
-		const name = form.children[0].value;
-		const breed = form.children[1].value;
-		const sex = form.children[2].value;
-		const id = form.children[3].dataset.id;
-
-		editDog(id, name, breed, sex)
-			.then(resp => resp.json())
-			.then(dog => {
-				document.getElementById(dog.id).innerHTML = `
-				<tr>
-					<td>${dog.name}</td> 
-					<td>${dog.breed}</td> 
-					<td>${dog.sex}</td> 
-					<td><button data-id=${dog.id}>Edit</button></td>
-				</tr>
-				`
-			})
-	})
-})
-
+// document.addEventListener('DOMContentLoaded', () => {
 
 function showDogs() {
 	fetch("http://localhost:3000/dogs")
@@ -71,6 +29,45 @@ function addDogToTable(dog) {
 	dogTable.append(newDogTr);
 }
 
+showDogs();
+
+dogTable.addEventListener("click", clickedEdit)
+function clickedEdit(event) {
+	if (event.target.dataset.id) {
+		addDogToForm(event)
+	}
+}
+
+function addDogToForm(event) {
+	let row = event.target.parentElement.parentElement.children;
+	form.children[0].value = row[0].innerText
+	form.children[1].value = row[1].innerText
+	form.children[2].value = row[2].innerText
+	form.children[3].dataset.id = row[3].children[0].dataset.id
+}
+
+form.addEventListener("submit", function(event) {
+	event.preventDefault();
+
+	const name = form.children[0].value;
+	const breed = form.children[1].value;
+	const sex = form.children[2].value;
+	const id = form.children[3].dataset.id;
+
+	editDog(id, name, breed, sex)
+		.then(resp => resp.json())
+		.then(dog => {
+			document.getElementById(dog.id).innerHTML = `
+			<tr>
+				<td>${dog.name}</td> 
+				<td>${dog.breed}</td> 
+				<td>${dog.sex}</td> 
+				<td><button data-id=${dog.id}>Edit</button></td>
+			</tr>
+			`
+		})
+})
+
 function editDog(id, name, breed, sex) {
 	return fetch(`http://localhost:3000/dogs/${id}`, {
 		method: "PATCH",
@@ -84,3 +81,4 @@ function editDog(id, name, breed, sex) {
 		}
 	})
 }
+// })
