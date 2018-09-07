@@ -113,6 +113,12 @@
       "name": "Coco",
       "breed": "Affenpinscher",
       "sex": "female"
+    },
+    {
+      "name": "Derp",
+      "breed": "derpz-a-lot",
+      "sex": "mutant",
+      "id": 21
     }
   ]
 }
