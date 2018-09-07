@@ -2,21 +2,15 @@
   "dogs": [
     {
       "id": 1,
-      "name": "I am beyonce",
+      "name": "BEYONCE",
       "breed": "Scottish Deerhound",
-      "sex": "male"
-    },
-    {
-      "id": 2,
-      "name": "Baby",
-      "breed": "Scottish Deerhound",
-      "sex": "male"
+      "sex": "FIERCE"
     },
     {
       "id": 3,
       "name": "Snickers",
       "breed": "Dachshund",
-      "sex": "maleksfd"
+      "sex": "male"
     },
     {
       "id": 4,
@@ -56,9 +50,9 @@
     },
     {
       "id": 10,
-      "name": "Patches",
+      "name": "PatcheZZZ",
       "breed": "Dingo",
-      "sex": "male"
+      "sex": "MaLe"
     },
     {
       "id": 11,

@@ -4,17 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	const parsedJSON = response => response.json()
 	const registeredDogsTable = document.querySelector('#table-body')
 	const divForm = document.querySelector('#dog-form')
+	const deleteButton = document.querySelector('#dog-form').lastElementChild
 
 	fetch(dogsURL)
 		.then(parsedJSON)
 		.then(function showDogs(dogs) {
 			dogs.forEach(dog => {
 				registeredDogsTable.innerHTML += `
-					<tr>
+					<tr id="tr-${dog.id}">
 						<td class='padding center' id="name-${dog.id}">${dog.name}</td> 
 						<td class='padding center' id="breed-${dog.id}">${dog.breed}</td> 
 						<td class='padding center' id="sex-${dog.id}">${dog.sex}</td> 
-						<td class='padding center'><button data-id="${dog.id}">Edit</button></td>
+						<td class='padding center'><button data-id="${dog.id}">Edit Dog</button></td>
 					</tr>
 				`
 			})
@@ -52,5 +53,28 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 	}
 
+	deleteButton.addEventListener('click', deleteDog)
+
+	function deleteDog(event) {
+		// event.preventDefault();
+
+		if (document.getElementById(`tr-${event.target.parentElement.dataset.id}`).id === `tr-${event.target.parentElement.dataset.id}`) 
+
+		{
+			fetch(dogsURL + '/' + event.target.parentElement.dataset.id, {
+				method: 'DELETE',
+				body: JSON.stringify({
+					    "name": divForm[0].value,
+					    "breed": divForm[1].value,
+					    "sex": divForm[2].value
+				}),
+				headers: {
+					"Content-Type" : "application/json"
+				}
+			})
+
+			document.getElementById(`tr-${event.target.parentElement.dataset.id}`).remove()
+		}
+	}
 
 })
