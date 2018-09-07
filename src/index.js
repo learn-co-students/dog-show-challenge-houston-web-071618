@@ -3,11 +3,9 @@ const form = document.getElementById("dog-form");
 
 // document.addEventListener('DOMContentLoaded', () => {
 
-function showDogs() {
-	fetch("http://localhost:3000/dogs")
+fetch("http://localhost:3000/dogs")
 		.then(resp => resp.json())
 		.then(dogs => addDogsToPage(dogs))
-}
 
 function addDogsToPage(dogs) {
 	dogs.forEach(function(dog) {
@@ -28,8 +26,6 @@ function addDogToTable(dog) {
 	`
 	dogTable.append(newDogTr);
 }
-
-showDogs();
 
 dogTable.addEventListener("click", clickedEdit)
 function clickedEdit(event) {
