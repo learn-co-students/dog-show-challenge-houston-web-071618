@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const divAddForm = document.querySelector('#add-dog-form')
 	const divForm = document.querySelector('#dog-form')
 	const deleteButton = document.querySelector('#dog-form').lastElementChild
+	let addDogBtn = true;
+	let defaultAddForm = divAddForm.style.display = 'none';
 
 	fetch(dogsURL)
 		.then(parsedJSON)
@@ -22,7 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 		})
 
+	document.querySelector('#new-dog-btn').addEventListener('click', ShowAddDogForm)
 
+	function ShowAddDogForm(event) {
+
+		if (addDogBtn) {
+		    	divAddForm.style.display = 'block'
+		} else {
+		    	divAddForm.style.display = 'none'
+		}
+		
+		addDogBtn = !addDogBtn
+	}
 
 	registeredDogsTable.addEventListener('click', addDogToFormForEdit)
 	
@@ -37,34 +50,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	}
 
+
+
 	divAddForm.addEventListener('submit', addDog)
 
 	function addDog(event) {
 
-		fetch(dogsURL, {
-			method: 'POST',
-			body: JSON.stringify({
-				    "name": divAddForm[0].value,
-				    "breed": divAddForm[1].value,
-				    "sex": divAddForm[2].value
-			}),
-			headers: {
-				"Content-Type" : "application/json"
-			}
-		})
-		.then(parsedJSON)
-		.then(function showDogs(dogs) {
-			dogs.forEach(dog => {
-				registeredDogsTable.innerHTML += `
-					<tr id="tr-${dog.id}">
-						<td class='padding center' id="name-${dog.id}">${dog.name}</td> 
-						<td class='padding center' id="breed-${dog.id}">${dog.breed}</td> 
-						<td class='padding center' id="sex-${dog.id}">${dog.sex}</td> 
-						<td class='padding center'><button data-id="${dog.id}">Edit Dog</button></td>
-					</tr>
-				`
+		if (divAddForm[0].value && divAddForm[1].value && divAddForm[2].value) {
+
+			fetch(dogsURL, {
+				method: 'POST',
+				body: JSON.stringify({
+					    "name": divAddForm[0].value,
+					    "breed": divAddForm[1].value,
+					    "sex": divAddForm[2].value
+				}),
+				headers: {
+					"Content-Type" : "application/json"
+				}
 			})
-		})
+			.then(parsedJSON)
+			.then(function showDogs(dogs) {
+				dogs.forEach(dog => {
+					registeredDogsTable.innerHTML += `
+						<tr id="tr-${dog.id}">
+							<td class='padding center' id="name-${dog.id}">${dog.name}</td> 
+							<td class='padding center' id="breed-${dog.id}">${dog.breed}</td> 
+							<td class='padding center' id="sex-${dog.id}">${dog.sex}</td> 
+							<td class='padding center'><button data-id="${dog.id}">Edit Dog</button></td>
+						</tr>
+					`
+				})
+			})
+		}
 	}
 
 	divForm.addEventListener('submit', editDog)

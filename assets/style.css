@@ -23,11 +23,11 @@ th {
 }
 
 .padding {
-  padding: 2px;
+  padding: 3px;
 }
 
 .margin {
-  margin: 20px;
+  margin: 18px;
 }
 
 .blue {
@@ -39,7 +39,7 @@ th {
 }
 
 .border-round {
-  border-radius: 10px;
+  border-radius: 14px;
 }
 
 .border-grey {
