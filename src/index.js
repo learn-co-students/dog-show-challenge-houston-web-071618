@@ -11,10 +11,10 @@ tableBody.addEventListener("click", listenToEditButtons)
 submitInput.addEventListener("click", listenToSubmitInput)
 
 //event listener callback
-function listenToSubmitInput(event){
-    event.preventDefault()
+function listenToSubmitInput(event) {
+    event.preventDefault();
     let id = parseInt(dogForm.dataset.id)
-    if(id){
+    if (id) {
         fetch(`http://localhost:3000/dogs/${id}`, {
             method: 'PATCH',
             headers: {
@@ -25,29 +25,31 @@ function listenToSubmitInput(event){
                 breed: breedInput.value,
                 sex: sexInput.value
             })
+            //ideally don't refresh page here. 
         }).then(resp => resp.json())
             .then(updateDogs)
     }
 }
 
-// clear the input fields after submitting the dog edits through getAllDogs()
-function updateDogs(){
-    tableBody.innerHTML = '';
-    getAllDogs();
-    nameInput.value = '';
-    breedInput.value = '';
-    sexInput.value = '';
+function updateDogs(dog) {
+    //this is selecting the dog id value from the appendDogInfo function, which attaches the row info for each dog dynamically.
+    let selectedDogRow = document.getElementById(`${dog.id}`)
+    row.innerHTML = `
+        <td>${dog.name}</td>
+        <td>${dog.breed}</td>
+        <td>${dog.sex}</td>
+        <button data-id=${dog.id}>Edit</button>
+        `
 }
 
-//don't double dip by updating all the 10 dogs. Don't fetch from dog but just use the values the user input. Those were sent to the server. Use those values to only update the row that was changed. 
-
 //event listener callback
-function listenToEditButtons(event){
+function listenToEditButtons(event) {
+    event.preventDefault()
     let id = parseInt(event.target.dataset.id)
-    if (id){
+    if (id) {
         fetch(`http://localhost:3000/dogs/${id}`)
             .then(res => res.json())
-            .then(function(dog){
+            .then(function (dog) {
                 nameInput.value = dog.name
                 dogForm.dataset.id = dog.id
                 breedInput.value = dog.breed
@@ -58,22 +60,22 @@ function listenToEditButtons(event){
 
 function getAllDogs() {
     fetch('http://localhost:3000/dogs')
-            .then(res => res.json())
-            .then(dogs => appendDogInfo(dogs))
+        .then(res => res.json())
+        .then(dogs => appendDogInfo(dogs))
 }
 
 function appendDogInfo(dogs) {
-    
     dogs.forEach(dog => {
         const row = document.createElement('tr')
+        row.id = dog.id;
         row.innerHTML = `
         <td>${dog.name}</td>
         <td>${dog.breed}</td>
         <td>${dog.sex}</td>
         <button data-id=${dog.id}>Edit</button>
         `
-        tableBody.append(row)  
-    })  
+        tableBody.append(row)
+    })
 }
 
 //fetch information
